@@ -6,9 +6,16 @@ import icon from '../../resources/icon.png?asset'
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    title: 'MP3 Player',
+    width: 384,
+    height: 680,
     show: false,
+    resizable: false,
+    frame: false,
+    transparent: true,
+    hasShadow: false,
+    skipTaskbar: true,
+    alwaysOnTop: true,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -20,6 +27,9 @@ function createWindow() {
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })
+
+    // Hide window control buttons on macOS
+    mainWindow.setWindowButtonVisibility(false)
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
