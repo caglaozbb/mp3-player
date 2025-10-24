@@ -1,0 +1,27 @@
+@import './base.css';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Pixelify Sans', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    background-image: url('./background.png');
+    background-repeat: no-repeat;
+    -webkit-app-region: drag;
+    transition: background-image 0.3s ease;
+  }
+
+body.theme-blue {
+    background-image: url('./background-blue.png');
+}
