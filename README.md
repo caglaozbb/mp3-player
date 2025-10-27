@@ -1,34 +1,61 @@
-# mp3-player
+# 🎵 iPod MP3 Player
 
-An Electron application with React
+An Electron application with React that mimics the classic iPod design and functionality.
 
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-
-## Project Setup
-
-### Install
+## 🚀 Quick Start
 
 ```bash
-$ npm install
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build:win    # Windows
+npm run build:mac    # macOS
+npm run build:linux  # Linux
 ```
 
-### Development
 
-```bash
-$ npm run dev
+## ✨ Features
+
+- **iPod-style Navigation**: Classic wheel controls
+- **Music Player**: Howler.js integration with real-time progress
+- **Multiple Screens**: Main menu, music menu, artists, albums, songs
+- **Theme Support**: Pink and blue themes
+- **Clock Screen**: Real-time clock display
+
+## 🎵 Music System
+
+Add songs to `MusicContext.jsx`:
+
+```javascript
+const songs = [
+  {
+    id: 1,
+    name: 'Song Name',
+    artist: 'Artist Name',
+    album: 'Album Name',
+    file: new URL('../assets/songs/song.mp3', import.meta.url).href
+  }
+]
 ```
 
-### Build
+Place MP3 files in `src/renderer/src/assets/songs/`
 
-```bash
-# For windows
-$ npm run build:win
+## 🎮 Controls
 
-# For macOS
-$ npm run build:mac
+- **Center Button**: Select/confirm
+- **Play Button**: Play/pause music
+- **Left/Right**: Navigate lists
+- **Menu Button**: Go back
 
-# For Linux
-$ npm run build:linux
-```
+## 🚀 Development
+
+1. Create component in `screens/` folder
+2. Add case to `ScreenManager.jsx`
+3. Use `NavigationContext` for navigation
+
+
+**Built with ❤️ using Electron, React, and Howler.js**

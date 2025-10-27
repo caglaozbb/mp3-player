@@ -1,4 +1,5 @@
 import { useNavigation } from '../context/NavigationContext'
+import { useMusic } from '../context/MusicContext'
 import menu from '../assets/MENU.png'
 import last from '../assets/last.png'
 import next from '../assets/next.png'
@@ -14,6 +15,8 @@ const WheelController = () => {
     moveDown 
   } = useNavigation()
 
+  const { songs, artists, albums, volume, shuffle, loadSong, togglePlay, playNext, playPrevious, changeVolume, toggleShuffle } = useMusic()
+
   const getMaxIndex = () => {
     switch (currentScreen.screen) {
       case 'main':
@@ -25,11 +28,11 @@ const WheelController = () => {
       case 'settings':
         return 1 
       case 'artists':
-        return 4 
+        return artists.length - 1
       case 'albums':
-        return 3 
+        return albums.length - 1
       case 'songs':
-        return 7 
+        return currentScreen.songs ? currentScreen.songs.length - 1 : songs.length - 1
       case 'themes':
         return 1 
       default:
@@ -37,16 +40,38 @@ const WheelController = () => {
     }
   }
 
+  const handlePlayClick = () => {
+    togglePlay()
+  }
+
+  const handleNextClick = () => {
+    if (currentScreen.screen === 'settings' && selectedIndex === 0) {
+      changeVolume(volume + 0.05) 
+      return
+    }
+    
+    if (currentScreen.screen === 'nowPlaying') {
+      playNext()
+    } else {
+      moveDown(getMaxIndex())
+    }
+  }
+
+  const handlePrevClick = () => {
+    if (currentScreen.screen === 'settings' && selectedIndex === 0) {
+      changeVolume(volume - 0.05)
+      return
+    }
+    
+    if (currentScreen.screen === 'nowPlaying') {
+      playPrevious()
+    } else {
+      moveUp()
+    }
+  }
+
   const handleMenuClick = () => {
     goBack()
-  }
-
-  const handleUpClick = () => {
-    moveUp()
-  }
-
-  const handleDownClick = () => {
-    moveDown(getMaxIndex())
   }
 
   const handleCenterClick = () => {
@@ -54,9 +79,14 @@ const WheelController = () => {
       case 'main':
         const mainItems = ['music', 'extras', 'settings', 'shuffle', 'nowPlaying']
         if (selectedIndex === 3) {
-          console.log('Shuffle songs')
+          toggleShuffle()
         } else {
           navigateTo(mainItems[selectedIndex])
+        }
+        break
+      case 'settings':
+        if (selectedIndex === 1) {
+          toggleShuffle()
         }
         break
       case 'music':
@@ -68,26 +98,25 @@ const WheelController = () => {
         navigateTo(extrasItems[selectedIndex])
         break
       case 'artists':
+        const selectedArtist = artists[selectedIndex]
         navigateTo('songs', { 
-          title: `Artist ${selectedIndex + 1}`,
-          songs: [] // In real app, filter songs by artist
+          title: selectedArtist.name,
+          songs: selectedArtist.songs
         })
         break
       case 'albums':
+        const selectedAlbum = albums[selectedIndex]
         navigateTo('songs', { 
-          title: `Album ${selectedIndex + 1}`,
-          songs: [] // In real app, filter songs by album
+          title: selectedAlbum.name,
+          songs: selectedAlbum.songs
         })
         break
       case 'songs':
+        const songList = currentScreen.songs || songs
+        const selectedSong = songList[selectedIndex]
+        loadSong(selectedSong, false)
         navigateTo('nowPlaying', { 
-          song: {
-            name: `Song ${selectedIndex + 1}`,
-            artist: 'Artist Name',
-            album: 'Album Name',
-            duration: '3:45',
-            currentTime: '0:00'
-          }
+          song: selectedSong
         })
         break
       case 'themes':
@@ -110,13 +139,13 @@ const WheelController = () => {
       <div className="wheel-btn menu-btn" onClick={handleMenuClick}>
         <img src={menu} alt="menu" />
       </div>
-      <div className="wheel-btn left" onClick={handleUpClick}>
-        <img src={last} alt="up" />
+      <div className="wheel-btn left" onClick={handlePrevClick}>
+        <img src={last} alt="previous" />
       </div>
-      <div className="wheel-btn right" onClick={handleDownClick}>
-        <img src={next} alt="down" />
+      <div className="wheel-btn right" onClick={handleNextClick}>
+        <img src={next} alt="next" />
       </div>
-      <div className="wheel-btn play">
+      <div className="wheel-btn play" onClick={handlePlayClick}>
         <img src={play} alt="play/pause" />
       </div>
       <div className="center-btn" onClick={handleCenterClick}></div>

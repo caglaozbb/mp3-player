@@ -1,16 +1,21 @@
 import { useNavigation } from '../context/NavigationContext'
+import { useMusic } from '../context/MusicContext'
 import ScreenHeader from '../components/ScreenHeader'
+import { useEffect, useRef } from 'react'
 
 const AlbumsScreen = () => {
   const { selectedIndex, navigateTo } = useNavigation()
+  const { albums } = useMusic()
+  const activeItemRef = useRef(null)
 
-  // Sample album data
-  const albums = [
-    { id: 1, name: 'Album 1', artist: 'Artist 1', songs: ['Song 1', 'Song 2'] },
-    { id: 2, name: 'Album 2', artist: 'Artist 2', songs: ['Song 3', 'Song 4'] },
-    { id: 3, name: 'Album 3', artist: 'Artist 3', songs: ['Song 5', 'Song 6'] },
-    { id: 4, name: 'Album 4', artist: 'Artist 1', songs: ['Song 7', 'Song 8'] },
-  ]
+  useEffect(() => {
+    if (activeItemRef.current) {
+      activeItemRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      })
+    }
+  }, [selectedIndex])
 
   return (
     <>
@@ -20,6 +25,7 @@ const AlbumsScreen = () => {
         {albums.map((album, index) => (
           <li 
             key={album.id} 
+            ref={selectedIndex === index ? activeItemRef : null}
             className={`${selectedIndex === index ? 'active' : ''} arrow`}
           >
             {album.name}

@@ -1,66 +1,41 @@
 import { useNavigation } from '../context/NavigationContext'
+import { useMusic } from '../context/MusicContext'
+import { useMemo } from 'react'
 import ScreenHeader from '../components/ScreenHeader'
 import styles from '../styles/NowPlayingScreen.module.css'
 
 const NowPlayingScreen = () => {
   const { currentScreen } = useNavigation()
+  const { songs, currentSong, currentTime, duration, isPlaying } = useMusic()
 
-  // Sample data - replace with real data from your music player
-  const song = currentScreen.song || {
-    name: 'Bohemian Rhapsody',
-    artist: 'Queen',
-    album: 'A Night at the Opera',
-    duration: 354, 
-    currentTime: 78 
+  const song = currentSong || currentScreen.song || {
+    name: 'No Song Playing',
+    artist: 'Unknown',
+    album: 'Unknown'
   }
 
-  const totalSongs = 240
-  const currentSongIndex = 18
+  const totalSongs = songs.length
+  const currentSongIndex = songs.findIndex(s => s.id === song.id) + 1 || 1
 
-  const formatTime = (time) => {
-    if (!time && time !== 0) return '0:00'
+  const formatTime = (timeInSeconds) => {
+    if (!timeInSeconds && timeInSeconds !== 0) return '0:00'
     
-    let seconds = time
-    
-    if (typeof time === 'string' && time.includes(':')) {
-      const parts = time.split(':')
-      const mins = parseInt(parts[0]) || 0
-      const secs = parseInt(parts[1]) || 0
-      seconds = mins * 60 + secs
-    } else {
-      seconds = parseInt(time) || 0
-    }
-    
+    const seconds = Math.floor(Math.abs(timeInSeconds))
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  const getDuration = () => {
-    if (!song.duration) return 100
-    if (typeof song.duration === 'string' && song.duration.includes(':')) {
-      const parts = song.duration.split(':')
-      return (parseInt(parts[0]) || 0) * 60 + (parseInt(parts[1]) || 0)
-    }
-    return parseInt(song.duration) || 100
-  }
+  const progressPercentage = useMemo(() => {
+    return duration > 0 ? (currentTime / duration) * 100 : 0
+  }, [duration, currentTime])
 
-  const getCurrentTime = () => {
-    if (!song.currentTime && song.currentTime !== 0) return 0
-    if (typeof song.currentTime === 'string' && song.currentTime.includes(':')) {
-      const parts = song.currentTime.split(':')
-      return (parseInt(parts[0]) || 0) * 60 + (parseInt(parts[1]) || 0)
-    }
-    return parseInt(song.currentTime) || 0
-  }
-
-  const durationSeconds = getDuration()
-  const currentSeconds = getCurrentTime()
-  const progressPercentage = durationSeconds > 0 ? (currentSeconds / durationSeconds) * 100 : 0
+  const formattedCurrentTime = useMemo(() => formatTime(currentTime), [currentTime])
+  const formattedDuration = useMemo(() => formatTime(duration), [duration])
 
   return (
     <>
-      <ScreenHeader title="Now Playing" style={{ fontSize: '20px' }} />
+      <ScreenHeader title="Now Playing"/>
             
       <div className={styles.container}>
         <div className={styles.trackInfo}>
@@ -68,7 +43,15 @@ const NowPlayingScreen = () => {
         </div>
         
         <div className={styles.content}>
-          <div className={styles.albumCover}></div>
+          <div className={styles.albumCover}>
+            {song.coverArt ? (
+              <img src={song.coverArt} alt={song.name} className={styles.coverImage} />
+            ) : (
+              <div className={styles.coverPlaceholder}>
+                {song.name.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
           
           <div className={styles.details}>
             <div className={styles.songTitle}>{song.name}</div>
@@ -85,10 +68,14 @@ const NowPlayingScreen = () => {
             ></div>
           </div>
           <div className={styles.timeDisplay}>
-          <span>{formatTime(song.currentTime)}</span>
-          <span>{formatTime(song.duration)}</span>
+            <span>{formattedCurrentTime}</span>
+            <span>{formattedDuration}</span>
+          </div>
         </div>
-        </div>
+        
+        {/* <div className={styles.playingStatus}>
+          {isPlaying ? '▶ Playing' : '⏸ Paused'}
+        </div> */}
         
       </div>
     </>

@@ -1,12 +1,14 @@
 import { useNavigation } from '../context/NavigationContext'
+import { useMusic } from '../context/MusicContext'
 import ScreenHeader from '../components/ScreenHeader'
 
 const SettingsMenu = () => {
   const { selectedIndex } = useNavigation()
+  const { volume, shuffle } = useMusic()
 
   const menuItems = [
-    { label: 'Volume', value: '50%' },
-    { label: 'Shuffle', value: 'Off' },
+    { label: 'Volume', value: `${Math.round(volume * 100)}%` },
+    { label: 'Shuffle', value: shuffle ? 'On' : 'Off' },
   ]
 
   return (

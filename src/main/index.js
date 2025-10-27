@@ -4,7 +4,6 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
 function createWindow() {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     title: 'MP3 Player',
     width: 384,
