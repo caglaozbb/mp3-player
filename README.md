@@ -2,13 +2,19 @@
 
 A nostalgic and functional desktop MP3 player built with Electron + Vite + React, featuring a classic iPod-inspired interface, clickable wheel controls, and a complete music library system.
 
+---
+
 ## 🌟 Overview
 
 iPod MP3 Player is a cross-platform desktop application that recreates the iconic iPod experience with modern technology. It combines the beloved iPod navigation system with powerful music playback features, automatic metadata extraction, and customizable themes.
 
+---
+
 ## 🎬 Demo
 
-*iPod MP3 Player Demo*
+![iPod MP3 Player Demo](src/renderer/src/assets/mp3Player.gif)
+
+---
 
 ## 🎯 Features
 
@@ -32,6 +38,7 @@ iPod MP3 Player is a cross-platform desktop application that recreates the iconi
 
 **Multiple Navigation Screens**: Main Menu, Music Menu, Artists, Albums, Songs, Now Playing, Settings, Themes, Extras, and Clock
 
+---
 
 ## 🗂 Application Flow
 
@@ -51,6 +58,8 @@ iPod MP3 Player is a cross-platform desktop application that recreates the iconi
 
 **Extras**: Access Clock screen and Theme selector
 
+---
+
 ## 💻 Technology Stack
 
 **Frontend**: React 19 with modern hooks and context API
@@ -64,6 +73,8 @@ iPod MP3 Player is a cross-platform desktop application that recreates the iconi
 **Build Tool**: Vite for fast development and optimized builds
 
 **Styling**: CSS Modules for component-scoped styles
+
+---
 
 ## ⚙️ Requirements
 
@@ -125,6 +136,7 @@ npm run build:win   # Windows
 npm run build:mac   # macOS
 npm run build:linux # Linux
 ```
+---
 
 ## 🎮 Controls
 
@@ -144,6 +156,8 @@ npm run build:linux # Linux
   - Next track when in Now Playing
   - Increase volume in Settings
 
+---
+
 ## 🎵 Adding Music
 
 Place your MP3 files in `src/renderer/src/assets/songs/`
@@ -162,10 +176,13 @@ const songFiles = [
   // Add more songs here
 ]
 ```
+---
 
 ## 🖥 Platform Support
 
 Developed and tested on macOS. Cross-platform compatibility expected thanks to Electron.
+
+---
 
 ## 📂 Project Structure
 
@@ -185,7 +202,7 @@ mp3-player/
 └── out/                   # Compiled output
 ```
 
-
+---
 ## 📝 Development
 
 1. Create new screen components in `screens/` folder
