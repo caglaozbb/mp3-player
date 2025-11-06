@@ -12,7 +12,7 @@ iPod MP3 Player is a cross-platform desktop application that recreates the iconi
 
 ## 🎬 Demo
 
-![iPod MP3 Player Demo](src/renderer/src/assets/mp3Player.gif)
+<img src="src/renderer/src/assets/mp3Player.gif" alt="Calculator Demo" width="400">
 
 ---
 
