@@ -1,9 +1,14 @@
 import { useNavigation } from '../context/NavigationContext'
 import { useMusic } from '../context/MusicContext'
+import { useState, useEffect } from 'react'
 import menu from '../assets/MENU.png'
 import last from '../assets/last.png'
 import next from '../assets/next.png'
 import play from '../assets/play.png'
+import menuBlue from '../assets/MENU-blue.png'
+import lastBlue from '../assets/last-blue.png'
+import nextBlue from '../assets/next-blue.png'
+import playBlue from '../assets/play-blue.png'
 
 const WheelController = () => {
   const { 
@@ -16,6 +21,28 @@ const WheelController = () => {
   } = useNavigation()
 
   const { songs, artists, albums, volume, shuffle, loadSong, togglePlay, playNext, playPrevious, changeVolume, toggleShuffle } = useMusic()
+
+  const [isBlueTheme, setIsBlueTheme] = useState(document.body.classList.contains('theme-blue'))
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      setIsBlueTheme(document.body.classList.contains('theme-blue'))
+    }
+
+    window.addEventListener('themeChanged', handleThemeChange)
+    const observer = new MutationObserver(handleThemeChange)
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+
+    return () => {
+      window.removeEventListener('themeChanged', handleThemeChange)
+      observer.disconnect()
+    }
+  }, [])
+
+  const menuIcon = isBlueTheme ? menuBlue : menu
+  const lastIcon = isBlueTheme ? lastBlue : last
+  const nextIcon = isBlueTheme ? nextBlue : next
+  const playIcon = isBlueTheme ? playBlue : play
 
   const getMaxIndex = () => {
     switch (currentScreen.screen) {
@@ -137,16 +164,16 @@ const WheelController = () => {
   return (
     <div className="wheel">
       <div className="wheel-btn menu-btn" onClick={handleMenuClick}>
-        <img src={menu} alt="menu" />
+        <img src={menuIcon} alt="menu" />
       </div>
       <div className="wheel-btn left" onClick={handlePrevClick}>
-        <img src={last} alt="previous" />
+        <img src={lastIcon} alt="previous" />
       </div>
       <div className="wheel-btn right" onClick={handleNextClick}>
-        <img src={next} alt="next" />
+        <img src={nextIcon} alt="next" />
       </div>
       <div className="wheel-btn play" onClick={handlePlayClick}>
-        <img src={play} alt="play/pause" />
+        <img src={playIcon} alt="play/pause" />
       </div>
       <div className="center-btn" onClick={handleCenterClick}></div>
     </div>

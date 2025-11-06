@@ -13,6 +13,7 @@
     inset 0 10px 20px rgba(0,0,0,0.25);
   display: flex;
   flex-direction: column;
+  user-select: none;
 }
 
 .screen::before {
@@ -205,6 +206,7 @@
 .wheel-btn {
   position: absolute;
   color: #d6608b;
+  border-radius: 50%;
   font-weight: 800;
   user-select: none;
   -webkit-app-region: no-drag;
@@ -256,7 +258,10 @@
   align-items: center;
   justify-content: center;
   -webkit-app-region: no-drag;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
+
 
 /* Blue theme styles */
 body.theme-blue .wheel-btn {
